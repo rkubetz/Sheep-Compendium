@@ -88,4 +88,13 @@ def test_update_sheep():
     assert verify_response.json()["name"] == "Spikey"
 
 
+def test_delete_sheep():
+    # Delete Sheep #6 (Esther)
+    response = client.delete("/sheep/6")
 
+    # Verify successful deletion status code
+    assert response.status_code == 204
+
+    # Verify the sheep is actually gone by trying to GET it
+    verify_response = client.get("/sheep/6")
+    assert verify_response.status_code == 404
