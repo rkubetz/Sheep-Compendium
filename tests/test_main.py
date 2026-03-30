@@ -51,3 +51,16 @@ def test_add_sheep():
 
     assert verify_response.status_code == 200
     assert verify_response.json() == sheep_data_name
+
+def test_read_all_sheep():
+    response = client.get("/sheep/")
+    assert response.status_code == 200
+
+    # We know the fake DB starts with 6 sheep
+    assert len(response.json()) >= 6
+
+    # Verify the structure of the first item
+    first_sheep = response.json()[0]
+    assert "id" in first_sheep
+    assert "name" in first_sheep
+
