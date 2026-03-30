@@ -52,6 +52,8 @@ def test_add_sheep():
     assert verify_response.status_code == 200
     assert verify_response.json() == sheep_data_name
 
+############# EXTRA CREDIT #############
+
 def test_read_all_sheep():
     response = client.get("/sheep/")
     assert response.status_code == 200
@@ -63,4 +65,27 @@ def test_read_all_sheep():
     first_sheep = response.json()[0]
     assert "id" in first_sheep
     assert "name" in first_sheep
+
+
+def test_update_sheep():
+    # Data to update Sheep #1 (Spice -> Spikey)
+    updated_sheep = {
+        "id": 1,
+        "name": "Spikey",
+        "breed": "Gotland",
+        "sex": "ewe"
+    }
+
+    # Send PUT request
+    response = client.put("/sheep/1", json=updated_sheep)
+
+    # Verify success
+    assert response.status_code == 200
+    assert response.json() == updated_sheep
+
+    # Verify it actually changed in the database via a GET request
+    verify_response = client.get("/sheep/1")
+    assert verify_response.json()["name"] == "Spikey"
+
+
 
